@@ -31,20 +31,25 @@ export default function Home() {
             unit: 'mm',
             format: 'a4',
           });
+          
           const pdfWidth = pdf.internal.pageSize.getWidth();
           const pdfHeight = pdf.internal.pageSize.getHeight();
           const canvasWidth = canvas.width;
           const canvasHeight = canvas.height;
           const ratio = canvasWidth / canvasHeight;
-          const width = pdfWidth;
-          const height = width / ratio;
-
-          let position = 0;
-          if (height > pdfHeight) {
-             position = (height - pdfHeight)/2;
+          
+          let imgWidth = pdfWidth;
+          let imgHeight = imgWidth / ratio;
+          
+          if (imgHeight > pdfHeight) {
+            imgHeight = pdfHeight;
+            imgWidth = imgHeight * ratio;
           }
+          
+          const x = (pdfWidth - imgWidth) / 2;
+          const y = (pdfHeight - imgHeight) / 2;
 
-          pdf.addImage(imgData, 'PNG', 0, -position, width, height);
+          pdf.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
           pdf.save('niwas.pdf');
           setSubmittedData(null);
         });
@@ -57,7 +62,7 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen text-foreground">
+    <main className="min-h-screen text-foreground bg-background">
       <div className="container mx-auto px-4 py-8">
         {submittedData && (
           <div className="fixed -z-10 -left-[9999px] top-0">
