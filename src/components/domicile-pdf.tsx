@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import type { SubmittedData } from '@/app/page';
 import QRCode from 'react-qr-code';
 import Image from 'next/image';
@@ -12,10 +13,15 @@ export default function DomicilePDF({ data }: DomicilePDFProps) {
   const formattedDate = data.date ? new Date(data.date).toLocaleDateString('en-GB') : '';
   const qrCodeValue = `https://edistrict.up.gov.in/portal/services/verifyCertificate.aspx?avl_no=${data.avedan}&cert_no=${data.kram}`;
 
+  const printableRef = React.useRef<HTMLDivElement>(null);
+
   return (
     <>
-      <div id="printable-area" className="bg-white p-4 rounded-md shadow-lg max-h-screen overflow-auto">
+      <div id="printable-area" ref={printableRef} className="max-h-screen overflow-auto">
         <div className="relative">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 opacity-10 pointer-events-none">
+              <Image src="/background.png" alt="UP Government Logo" width={400} height={400} />
+          </div>
           <table border={0} align="center" width="90%" cellSpacing="0" cellPadding="0" style={{border: '1px solid #000000', padding: '4px', fontSize: '10pt', fontFamily: 'Arial Unicode MS'}}>
              <tbody>
               <tr><td colSpan={6}>&nbsp;ई-डिस्ट्रिक्ट के अन्तर्गत जारी..</td></tr>
@@ -69,9 +75,6 @@ export default function DomicilePDF({ data }: DomicilePDFProps) {
               <tr><td align="center" colSpan={6} style={{paddingTop: '1rem'}}><font size="1pt"><b>यह प्रमाण पत्र इलेक्ट्रॉनिक डिलिवरी सिस्टम द्वारा तैयार किया गया है तथा डिजिटल सिग्नेचर से हस्ताक्षरित है। सम्बन्धित केन्द्र के अधिकृत कर्मी द्वारा प्रमाणित किया गया है। यह प्रमाण पत्र वेबसाइट https://edistrict.up.gov.in पर इसका  पहले आवेदन क्र० फिर प्रमाणपत्र क्र० अंकित कर,सत्यापित किया जा सकता है। </b></font></td></tr>
             </tbody>
           </table>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 opacity-10 pointer-events-none">
-              <Image src="/background.png" alt="UP Government Logo" width={400} height={400} />
-          </div>
         </div>
       </div>
     </>
