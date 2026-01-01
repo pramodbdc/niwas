@@ -23,33 +23,19 @@ export default function DomicilePDF({ data, onBack }: DomicilePDFProps) {
     if (input) {
       html2canvas(input, {
         useCORS: true,
-        scale: 2,
+        scale: 3, // Increased scale for better quality
       }).then((canvas) => {
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF({
-          orientation: 'p',
+          orientation: 'portrait',
           unit: 'mm',
           format: 'a4',
         });
         
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = pdf.internal.pageSize.getHeight();
-        const canvasWidth = canvas.width;
-        const canvasHeight = canvas.height;
-        const ratio = canvasWidth / canvasHeight;
         
-        let imgWidth = pdfWidth;
-        let imgHeight = imgWidth / ratio;
-        
-        if (imgHeight > pdfHeight) {
-          imgHeight = pdfHeight;
-          imgWidth = imgHeight * ratio;
-        }
-        
-        const x = (pdfWidth - imgWidth) / 2;
-        const y = (pdfHeight - imgHeight) / 2;
-
-        pdf.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
         pdf.save('niwas.pdf');
       });
     }
