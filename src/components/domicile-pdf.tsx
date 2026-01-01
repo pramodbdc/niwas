@@ -5,6 +5,8 @@ import { Button } from './ui/button';
 import { ArrowLeft, Printer } from 'lucide-react';
 import { Card, CardContent } from './ui/card';
 import QRCode from 'react-qr-code';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 interface DomicilePDFProps {
   data: SubmittedData;
@@ -19,12 +21,37 @@ export default function DomicilePDF({ data, onBack }: DomicilePDFProps) {
   const handlePrint = () => {
     const input = document.getElementById('printable-area');
     if (input) {
-      const printContents = input.innerHTML;
-      const originalContents = document.body.innerHTML;
-      document.body.innerHTML = printContents;
-      window.print();
-      document.body.innerHTML = originalContents;
-      window.location.reload();
+      html2canvas(input, {
+        useCORS: true,
+        scale: 2,
+      }).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF({
+          orientation: 'p',
+          unit: 'mm',
+          format: 'a4',
+        });
+        
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const canvasWidth = canvas.width;
+        const canvasHeight = canvas.height;
+        const ratio = canvasWidth / canvasHeight;
+        
+        let imgWidth = pdfWidth;
+        let imgHeight = imgWidth / ratio;
+        
+        if (imgHeight > pdfHeight) {
+          imgHeight = pdfHeight;
+          imgWidth = imgHeight * ratio;
+        }
+        
+        const x = (pdfWidth - imgWidth) / 2;
+        const y = (pdfHeight - imgHeight) / 2;
+
+        pdf.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
+        pdf.save('niwas.pdf');
+      });
     }
   };
 
@@ -112,7 +139,7 @@ export default function DomicilePDF({ data, onBack }: DomicilePDFProps) {
               <tr>
                 <td width="17%" ><b>तहसील </b></td>
                 <td ><b>{data.sbd}</b></td>
-                <td width="30%" colSpan={3} align="right">&nbsp;</td>
+                <td width="30%" colSpan={3-g} align="right">&nbsp;</td>
                 <td align="left" width="35%" ><b>जारी दिनांक: <span className="dates">{formattedDate}</span></b></td>
               </tr>
               <tr>
