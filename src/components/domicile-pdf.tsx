@@ -2,9 +2,9 @@
 
 import type { SubmittedData } from '@/app/page';
 import { Button } from './ui/button';
-import { GovernmentOfIndiaEmblem, QrCodePlaceholder } from './icons';
 import { ArrowLeft, Printer } from 'lucide-react';
 import { Card, CardContent } from './ui/card';
+import QRCode from 'react-qr-code';
 
 interface DomicilePDFProps {
   data: SubmittedData;
@@ -13,6 +13,8 @@ interface DomicilePDFProps {
 
 export default function DomicilePDF({ data, onBack }: DomicilePDFProps) {
   const formattedDate = new Date(data.date).toLocaleDateString('en-GB');
+  
+  const qrCodeValue = `https://edistrict.up.gov.in/portal/services/verifyCertificate.aspx?avl_no=${data.avedan}&cert_no=${data.kram}`;
 
   const handlePrint = () => {
     window.print();
@@ -20,7 +22,7 @@ export default function DomicilePDF({ data, onBack }: DomicilePDFProps) {
 
   return (
     <>
-      <style>{`
+      <style jsx>{`
         @media print {
           body {
             background-color: #fff;
@@ -41,6 +43,9 @@ export default function DomicilePDF({ data, onBack }: DomicilePDFProps) {
           }
           .mgn {
             border: 1px solid #000 !important;
+            background-image: url("/background.png") !important;
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
           }
         }
         .mgn {
@@ -52,6 +57,10 @@ export default function DomicilePDF({ data, onBack }: DomicilePDFProps) {
           font-size: 10pt;
           font-family: 'Arial Unicode MS', 'Inter', sans-serif;
           background-color: #fff;
+          background-image: url("/background.png");
+          background-repeat: no-repeat;
+          background-position: center right;
+          background-size: 430px;
         }
         .dates, .avedan, .kramank {
           font-size: 11px;
@@ -79,7 +88,7 @@ export default function DomicilePDF({ data, onBack }: DomicilePDFProps) {
           <table className="mgn" border={0} align="center" width="100%" cellSpacing="0" cellPadding="0">
             <tbody>
               <tr><td colSpan={6}>&nbsp;ई-डिस्ट्रिक्ट के अन्तर्गत जारी..</td></tr>
-              <tr><td colSpan={6}><p align="center"><GovernmentOfIndiaEmblem className="w-[110px] h-[110px]" /></p></td></tr>
+              <tr><td colSpan={6}><p align="center"><img src="/logo.jpg" alt="Logo" width="110" height="110" /></p></td></tr>
               <tr><td colSpan={6}><p align="center" className="text-4xl">उत्तर प्रदेश शासन</p></td></tr>
               <tr><td colSpan={6}><p align="center"><b><span className="text-xl">कार्यालय उप जिलाधिकारी द्वारा प्रदत्त सामान्य निवास प्रमाण पत्र</span></b></p></td></tr>
               <tr><td colSpan={6}>&nbsp;</td></tr>
@@ -173,7 +182,7 @@ export default function DomicilePDF({ data, onBack }: DomicilePDFProps) {
                 </td>
               </tr>
               <tr><td colSpan={6}><div className="h-4" /></td></tr>
-              <tr><td colSpan={6}><QrCodePlaceholder className="img2" /></td></tr>
+               <tr><td colSpan={6}><QRCode value={qrCodeValue} size={100} /></td></tr>
               <tr><td colSpan={6}><div className="h-4" /></td></tr>
               <tr>
                 <td align="center" colSpan={6}>
