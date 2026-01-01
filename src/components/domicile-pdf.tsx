@@ -2,7 +2,7 @@
 
 import type { SubmittedData } from '@/app/page';
 import { Button } from './ui/button';
-import QRCode from "react-qr-code";
+import QRCode from 'react-qr-code';
 import { Printer } from 'lucide-react';
 import Image from 'next/image';
 
@@ -21,23 +21,17 @@ export default function DomicilePDF({ data, onBack }: DomicilePDFProps) {
 
   return (
     <>
-      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity no-print" />
-      <div className="fixed inset-0 z-10 w-screen overflow-y-auto no-print">
-        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-          <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-4xl">
-            {/* Printable content is duplicated here for print media query */}
-            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-              <Button onClick={handlePrint}><Printer className="mr-2 h-4 w-4" /> Print</Button>
-            </div>
-          </div>
-        </div>
+      <div className="no-print mb-4 flex justify-end gap-2">
+        <Button onClick={onBack}>Back to Form</Button>
+        <Button onClick={handlePrint}>
+          <Printer className="mr-2 h-4 w-4" /> Print
+        </Button>
       </div>
-
-      {/* This is the printable version */}
-      <div id="printable-area" className="bg-white">
+      
+      <div id="printable-area" className="bg-white p-4 rounded-md shadow-lg">
         <div className="relative">
-          <table border={0} align="center" width="90%" cellSpacing="0" cellPadding="0" style={{border: '1px solid #000000', paddingLeft: '4px', paddingRight: '4px', paddingTop: '1px', paddingBottom: '1px', fontSize: '10pt', fontFamily: 'Arial Unicode MS'}}>
-            <tbody>
+          <table border={0} align="center" width="90%" cellSpacing="0" cellPadding="0" style={{border: '1px solid #000000', padding: '4px', fontSize: '10pt', fontFamily: 'Arial Unicode MS'}}>
+             <tbody>
               <tr><td colSpan={6}>&nbsp;ई-डिस्ट्रिक्ट के अन्तर्गत जारी..</td></tr>
               <tr><td colSpan={6}><p align="center"><Image src="/logo.jpg" alt="logo" width="110" height="110" /></p></td></tr>
               <tr><td colSpan={6}><p align="center"><font size="6">उत्तर प्रदेश शासन</font></p></td></tr>
@@ -89,27 +83,12 @@ export default function DomicilePDF({ data, onBack }: DomicilePDFProps) {
               <tr><td align="center" colSpan={6} style={{paddingTop: '1rem'}}><font size="1pt"><b>यह प्रमाण पत्र इलेक्ट्रॉनिक डिलिवरी सिस्टम द्वारा तैयार किया गया है तथा डिजिटल सिग्नेचर से हस्ताक्षरित है। सम्बन्धित केन्द्र के अधिकृत कर्मी द्वारा प्रमाणित किया गया है। यह प्रमाण पत्र वेबसाइट https://edistrict.up.gov.in पर इसका  पहले आवेदन क्र० फिर प्रमाणपत्र क्र० अंकित कर,सत्यापित किया जा सकता है। </b></font></td></tr>
             </tbody>
           </table>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 opacity-10 pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 opacity-10 pointer-events-none">
               <Image src="/background.png" alt="UP Government Logo" width={400} height={400} />
           </div>
         </div>
       </div>
       <style jsx global>{`
-        @media screen {
-          #printable-area {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            max-height: 90vh;
-            overflow-y: auto;
-            z-index: 20;
-            max-width: 4xl;
-            width: 100%;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-            border-radius: 0.5rem;
-          }
-        }
         @media print {
           body > :not(#printable-area) {
             display: none !important;
@@ -126,6 +105,10 @@ export default function DomicilePDF({ data, onBack }: DomicilePDFProps) {
             height: auto;
             -webkit-print-color-adjust: exact;
             color-adjust: exact;
+            padding: 0;
+            margin: 0;
+            box-shadow: none;
+            border-radius: 0;
           }
         }
       `}</style>
