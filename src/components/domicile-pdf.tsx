@@ -1,34 +1,20 @@
 'use client';
 
 import type { SubmittedData } from '@/app/page';
-import { Button } from './ui/button';
 import QRCode from 'react-qr-code';
-import { Printer } from 'lucide-react';
 import Image from 'next/image';
 
 interface DomicilePDFProps {
   data: SubmittedData;
-  onBack: () => void;
 }
 
-export default function DomicilePDF({ data, onBack }: DomicilePDFProps) {
+export default function DomicilePDF({ data }: DomicilePDFProps) {
   const formattedDate = data.date ? new Date(data.date).toLocaleDateString('en-GB') : '';
   const qrCodeValue = `https://edistrict.up.gov.in/portal/services/verifyCertificate.aspx?avl_no=${data.avedan}&cert_no=${data.kram}`;
 
-  const handlePrint = () => {
-    window.print();
-  };
-
   return (
     <>
-      <div className="no-print mb-4 flex justify-end gap-2">
-        <Button onClick={onBack}>Back to Form</Button>
-        <Button onClick={handlePrint}>
-          <Printer className="mr-2 h-4 w-4" /> Print
-        </Button>
-      </div>
-      
-      <div id="printable-area" className="bg-white p-4 rounded-md shadow-lg">
+      <div id="printable-area" className="bg-white p-4 rounded-md shadow-lg max-h-screen overflow-auto">
         <div className="relative">
           <table border={0} align="center" width="90%" cellSpacing="0" cellPadding="0" style={{border: '1px solid #000000', padding: '4px', fontSize: '10pt', fontFamily: 'Arial Unicode MS'}}>
              <tbody>
@@ -88,30 +74,6 @@ export default function DomicilePDF({ data, onBack }: DomicilePDFProps) {
           </div>
         </div>
       </div>
-      <style jsx global>{`
-        @media print {
-          body > :not(#printable-area) {
-            display: none !important;
-          }
-          .no-print {
-            display: none !important;
-          }
-          #printable-area {
-            display: block !important;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: auto;
-            -webkit-print-color-adjust: exact;
-            color-adjust: exact;
-            padding: 0;
-            margin: 0;
-            box-shadow: none;
-            border-radius: 0;
-          }
-        }
-      `}</style>
     </>
   );
 }

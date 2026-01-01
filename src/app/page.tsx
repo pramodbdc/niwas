@@ -15,15 +15,11 @@ export default function Home() {
     setSubmittedData(data);
   };
 
-  const handleBackToForm = () => {
-    setSubmittedData(null);
-  }
-
   return (
     <main className="min-h-screen text-foreground bg-background">
       <div className="container mx-auto px-4 py-8">
         {submittedData ? (
-          <DomicilePDF data={submittedData} onBack={handleBackToForm} />
+          <DomicilePDF data={submittedData} />
         ) : (
           <>
             <header className="text-center mb-8">
