@@ -8,9 +8,10 @@ import Image from 'next/image';
 
 interface DomicilePDFProps {
   data: SubmittedData;
+  onBack: () => void;
 }
 
-export default function DomicilePDF({ data }: DomicilePDFProps) {
+export default function DomicilePDF({ data, onBack }: DomicilePDFProps) {
   const formattedDate = data.date ? new Date(data.date).toLocaleDateString('en-GB') : '';
   const qrCodeValue = `https://edistrict.up.gov.in/portal/services/verifyCertificate.aspx?avl_no=${data.avedan}&cert_no=${data.kram}`;
 
@@ -23,11 +24,12 @@ export default function DomicilePDF({ data }: DomicilePDFProps) {
       <div className="fixed inset-0 bg-gray-500 bg-opacity-75" />
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <div className="bg-white p-4 rounded-lg shadow-xl max-w-4xl w-full relative">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 opacity-20">
+          <div id="printable-area" className="printable-area relative">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 opacity-10">
                 <Image src="/background.png" alt="UP Government Logo" width={400} height={400} />
             </div>
-            <div id="printable-area" className="printable-area relative z-10">
-              <table border={0} align="center" width="90%" cellSpacing="0" cellPadding="0" style={{border: '1px solid #000000', paddingLeft: '4px', paddingRight: '4px', paddingTop: '1px', paddingBottom: '1px', fontSize: '10pt', fontFamily: 'Arial Unicode MS', backgroundColor: 'transparent' }}>
+            <div className="relative z-10">
+            <table border={0} align="center" width="90%" cellSpacing="0" cellPadding="0" style={{border: '1px solid #000000', paddingLeft: '4px', paddingRight: '4px', paddingTop: '1px', paddingBottom: '1px', fontSize: '10pt', fontFamily: 'Arial Unicode MS'}}>
                 <tbody>
                   <tr><td colSpan={6}>&nbsp;ई-डिस्ट्रिक्ट के अन्तर्गत जारी..</td></tr>
                   <tr><td colSpan={6}><p align="center"><Image src="/logo.jpg" alt="logo" width="110" height="110" /></p></td></tr>
@@ -80,18 +82,20 @@ export default function DomicilePDF({ data }: DomicilePDFProps) {
                   <tr><td align="center" colSpan={6} style={{paddingTop: '1rem'}}><font size="1pt"><b>यह प्रमाण पत्र इलेक्ट्रॉनिक डिलिवरी सिस्टम द्वारा तैयार किया गया है तथा डिजिटल सिग्नेचर से हस्ताक्षरित है। सम्बन्धित केन्द्र के अधिकृत कर्मी द्वारा प्रमाणित किया गया है। यह प्रमाण पत्र वेबसाइट https://edistrict.up.gov.in पर इसका  पहले आवेदन क्र० फिर प्रमाणपत्र क्र० अंकित कर,सत्यापित किया जा सकता है। </b></font></td></tr>
                 </tbody>
               </table>
-            </div>
-            <div className="no-print mt-4 flex justify-end">
-                <Button onClick={handlePrint}><Printer className="mr-2 h-4 w-4" /> Print</Button>
-            </div>
+              </div>
+          </div>
+          <div className="no-print mt-4 flex justify-between">
+              <Button variant="outline" onClick={onBack}>Back to Form</Button>
+              <Button onClick={handlePrint}><Printer className="mr-2 h-4 w-4" /> Print</Button>
+          </div>
         </div>
       </div>
       <style jsx global>{`
         @media print {
-          body > *:not(.printable-area) {
+          body > *:not(#printable-area) {
             display: none !important;
           }
-          .printable-area {
+          #printable-area {
             position: absolute;
             top: 0;
             left: 0;
@@ -99,12 +103,12 @@ export default function DomicilePDF({ data }: DomicilePDFProps) {
             height: 100%;
             padding: 15px;
             margin: 0;
+            background-color: #fff !important;
+            -webkit-print-color-adjust: exact;
+            color-adjust: exact;
           }
           .no-print {
             display: none !important;
-          }
-          body {
-            background-color: #fff !important;
           }
         }
       `}</style>
