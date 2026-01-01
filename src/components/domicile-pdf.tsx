@@ -5,8 +5,6 @@ import { Button } from './ui/button';
 import { ArrowLeft, Printer } from 'lucide-react';
 import { Card, CardContent } from './ui/card';
 import QRCode from 'react-qr-code';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 
 interface DomicilePDFProps {
   data: SubmittedData;
@@ -19,38 +17,15 @@ export default function DomicilePDF({ data, onBack }: DomicilePDFProps) {
   const qrCodeValue = `https://edistrict.up.gov.in/portal/services/verifyCertificate.aspx?avl_no=${data.avedan}&cert_no=${data.kram}`;
 
   const handlePrint = () => {
-    const input = document.getElementById('printable-area');
-    if (input) {
-      html2canvas(input, {
-        useCORS: true,
-        scale: 3, // Increased scale for better quality
-      }).then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF({
-          orientation: 'portrait',
-          unit: 'mm',
-          format: 'a4',
-        });
-        
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = pdf.internal.pageSize.getHeight();
-        
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save('niwas.pdf');
-      });
-    }
+    window.print();
   };
 
   return (
     <>
       <div className="no-print mb-8 flex justify-between items-center">
-        <div>
-          <h2 className="font-headline text-2xl font-bold text-primary">Certificate Preview</h2>
-          <p className="text-muted-foreground">Review your generated certificate. You can print or save it as a PDF.</p>
-        </div>
+        <div/>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={onBack}><ArrowLeft className="mr-2 h-4 w-4" /> Back to Form</Button>
-          <Button onClick={handlePrint}><Printer className="mr-2 h-4 w-4" /> Print / Save as PDF</Button>
+          <Button onClick={handlePrint}><Printer className="mr-2 h-4 w-4" /> Print</Button>
         </div>
       </div>
       <Card className="printable-area" id="printable-area">
