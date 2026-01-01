@@ -1,8 +1,10 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DomicileForm from '@/components/domicile-form';
 import DomicilePDF from '@/components/domicile-pdf';
 import type { DomicileFormSchema } from '@/lib/validators';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 export interface SubmittedData extends DomicileFormSchema {
   photoUrl: string;
@@ -13,11 +15,42 @@ export default function Home() {
 
   const handleFormSubmit = (data: SubmittedData) => {
     setSubmittedData(data);
-    setTimeout(() => {
-      window.print();
-      setSubmittedData(null); 
-    }, 100);
   };
+  
+  useEffect(() => {
+    if (submittedData) {
+      const input = document.getElementById('printable-area');
+      if (input) {
+        html2canvas(input, {
+          useCORS: true,
+          scale: 2, 
+        }).then((canvas) => {
+          const imgData = canvas.toDataURL('image/png');
+          const pdf = new jsPDF({
+            orientation: 'p',
+            unit: 'mm',
+            format: 'a4',
+          });
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = pdf.internal.pageSize.getHeight();
+          const canvasWidth = canvas.width;
+          const canvasHeight = canvas.height;
+          const ratio = canvasWidth / canvasHeight;
+          const width = pdfWidth;
+          const height = width / ratio;
+
+          let position = 0;
+          if (height > pdfHeight) {
+             position = (height - pdfHeight)/2;
+          }
+
+          pdf.addImage(imgData, 'PNG', 0, -position, width, height);
+          pdf.save('niwas.pdf');
+          setSubmittedData(null);
+        });
+      }
+    }
+  }, [submittedData]);
 
   const handleBackToForm = () => {
     setSubmittedData(null);
@@ -27,7 +60,7 @@ export default function Home() {
     <main className="min-h-screen text-foreground">
       <div className="container mx-auto px-4 py-8">
         {submittedData && (
-          <div className="fixed inset-0 z-[-1] opacity-0">
+          <div className="fixed -z-10 -left-[9999px] top-0">
             <DomicilePDF data={submittedData} onBack={handleBackToForm} />
           </div>
         )}

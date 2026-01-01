@@ -17,7 +17,15 @@ export default function DomicilePDF({ data, onBack }: DomicilePDFProps) {
   const qrCodeValue = `https://edistrict.up.gov.in/portal/services/verifyCertificate.aspx?avl_no=${data.avedan}&cert_no=${data.kram}`;
 
   const handlePrint = () => {
-    window.print();
+    const input = document.getElementById('printable-area');
+    if (input) {
+      const printContents = input.innerHTML;
+      const originalContents = document.body.innerHTML;
+      document.body.innerHTML = printContents;
+      window.print();
+      document.body.innerHTML = originalContents;
+      window.location.reload();
+    }
   };
 
   return (
