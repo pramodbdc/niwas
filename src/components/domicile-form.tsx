@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { domicileFormSchema, type DomicileFormSchema } from '@/lib/validators';
@@ -59,6 +59,29 @@ export default function DomicileForm({ onSubmitSuccess }: DomicileFormProps) {
       vle: '',
     },
   });
+
+  useEffect(() => {
+    const generateRandomNumber = () => {
+      const prefix = '2618000'; // First seven digits
+      const prefix1 = '5052'
+      const remainingLength = 15 - prefix.length; // Calculate remaining length
+      const remainingLength1 = 12 - prefix1.length;
+      // Generate remaining random digits
+      let randomDigits = '';
+      for (let i = 0; i < remainingLength; i++) {
+        randomDigits += Math.floor(Math.random() * 10); // Append random digits
+      }
+      let randomDigits1 = '';
+      for (let i = 0; i < remainingLength1; i++) {
+        randomDigits1 += Math.floor(Math.random() * 10); // Append random digits
+      }
+      const fullNumber = prefix + randomDigits; // Concatenate prefix with random digits
+      const fullNumber1 = prefix1 + randomDigits1;
+      form.setValue('avedan', fullNumber);
+      form.setValue('kram', fullNumber1);
+    };
+    generateRandomNumber();
+  }, [form]);
 
   const onSubmit = (values: DomicileFormSchema) => {
     if (!photoUrl) {
@@ -131,10 +154,10 @@ export default function DomicileForm({ onSubmitSuccess }: DomicileFormProps) {
                 <FormItem><FormLabel>4. थाना</FormLabel><FormControl><Input placeholder="थाना का नाम" {...field} /></FormControl><FormMessage /></FormItem>
               )} />
               <FormField control={form.control} name="avedan" render={({ field }) => (
-                <FormItem><FormLabel>5. आवेदन क्रमांक</FormLabel><FormControl><Input type="text" placeholder="Application Number" {...field} /></FormControl><FormMessage /></FormItem>
+                <FormItem><FormLabel>5. आवेदन क्रमांक</FormLabel><FormControl><Input type="text" placeholder="Application Number" {...field} readOnly /></FormControl><FormMessage /></FormItem>
               )} />
               <FormField control={form.control} name="kram" render={({ field }) => (
-                <FormItem><FormLabel>6. प्रमाण पत्र संख्या</FormLabel><FormControl><Input type="text" placeholder="Certificate Number" {...field} /></FormControl><FormMessage /></FormItem>
+                <FormItem><FormLabel>6. प्रमाण पत्र संख्या</FormLabel><FormControl><Input type="text" placeholder="Certificate Number" {...field} readOnly /></FormControl><FormMessage /></FormItem>
               )} />
               <FormField control={form.control} name="name" render={({ field }) => (
                 <FormItem><FormLabel>7. नाम (English)</FormLabel><FormControl><Input placeholder="Enter name in English" {...field} /></FormControl><FormMessage /></FormItem>
@@ -202,3 +225,5 @@ export default function DomicileForm({ onSubmitSuccess }: DomicileFormProps) {
     </Card>
   );
 }
+
+    
