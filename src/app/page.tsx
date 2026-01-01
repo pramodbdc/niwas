@@ -13,6 +13,10 @@ export default function Home() {
 
   const handleFormSubmit = (data: SubmittedData) => {
     setSubmittedData(data);
+    setTimeout(() => {
+      window.print();
+      setSubmittedData(null); 
+    }, 100);
   };
 
   const handleBackToForm = () => {
@@ -22,17 +26,16 @@ export default function Home() {
   return (
     <main className="min-h-screen text-foreground">
       <div className="container mx-auto px-4 py-8">
-        {submittedData ? (
-          <DomicilePDF data={submittedData} onBack={handleBackToForm} />
-        ) : (
-          <>
-            <header className="text-center mb-8">
-              <h1 className="font-headline text-4xl font-bold text-primary tracking-tight sm:text-5xl">DomicileEase</h1>
-              <p className="text-muted-foreground mt-2 text-lg">जन निवास प्रमाण पत्र आवेदन</p>
-            </header>
-            <DomicileForm onSubmitSuccess={handleFormSubmit} />
-          </>
+        {submittedData && (
+          <div className="fixed inset-0 z-[-1] opacity-0">
+            <DomicilePDF data={submittedData} onBack={handleBackToForm} />
+          </div>
         )}
+        <header className="text-center mb-8">
+          <h1 className="font-headline text-4xl font-bold text-primary tracking-tight sm:text-5xl">DomicileEase</h1>
+          <p className="text-muted-foreground mt-2 text-lg">जन निवास प्रमाण पत्र आवेदन</p>
+        </header>
+        <DomicileForm onSubmitSuccess={handleFormSubmit} />
       </div>
     </main>
   );

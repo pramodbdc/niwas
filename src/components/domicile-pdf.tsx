@@ -22,57 +22,6 @@ export default function DomicilePDF({ data, onBack }: DomicilePDFProps) {
 
   return (
     <>
-      <style jsx>{`
-        @media print {
-          body {
-            background-color: #fff;
-          }
-          .no-print {
-            display: none;
-          }
-          .printable-area {
-            width: 100%;
-            height: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            margin: 0;
-            padding: 15px;
-            border: none;
-            box-shadow: none;
-          }
-          .mgn {
-            border: 1px solid #000 !important;
-            background-image: url("/background.png") !important;
-            -webkit-print-color-adjust: exact !important;
-            color-adjust: exact !important;
-          }
-        }
-        .mgn {
-          border: 1px solid #000000;
-          padding-left: 4px;
-          padding-right: 4px;
-          padding-top: 1px;
-          padding-bottom: 1px;
-          font-size: 10pt;
-          font-family: 'Arial Unicode MS', 'Inter', sans-serif;
-          background-color: #fff;
-          background-image: url("/background.png");
-          background-repeat: no-repeat;
-          background-position: center right;
-          background-size: 430px;
-        }
-        .dates, .avedan, .kramank {
-          font-size: 11px;
-          font-family: verdana, sans-serif;
-        }
-        .table2 { font-size: 10pt; }
-        .img1 { width: 96px; height: 96px; object-fit: cover; }
-        .td1 { font-family: verdana, sans-serif; }
-        .img2 { width: 100px; height: 100px; }
-        .td2 { font-size: 14px; font-family: Arial, sans-serif; }
-        .td3 { font-size: 8px; font-family: Arial, sans-serif; }
-      `}</style>
       <div className="no-print mb-8 flex justify-between items-center">
         <div>
           <h2 className="font-headline text-2xl font-bold text-primary">Certificate Preview</h2>
@@ -83,8 +32,62 @@ export default function DomicilePDF({ data, onBack }: DomicilePDFProps) {
           <Button onClick={handlePrint}><Printer className="mr-2 h-4 w-4" /> Print / Save as PDF</Button>
         </div>
       </div>
-      <Card className="printable-area shadow-lg" id="printable-area">
+      <Card className="printable-area" id="printable-area">
         <CardContent className="p-2 md:p-4">
+          <style jsx global>{`
+            @media print {
+              body {
+                background-color: #fff !important;
+                margin: 0;
+                padding: 0;
+              }
+              .no-print {
+                display: none !important;
+              }
+              #printable-area {
+                width: 100% !important;
+                height: 100% !important;
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                margin: 0 !important;
+                padding: 15px !important;
+                border: none !important;
+                box-shadow: none !important;
+                page-break-after: always;
+              }
+              .mgn {
+                border: 1px solid #000 !important;
+                background-image: url("/background.png") !important;
+                -webkit-print-color-adjust: exact !important;
+                color-adjust: exact !important;
+              }
+            }
+            .mgn {
+              border: 1px solid #000000;
+              padding-left: 4px;
+              padding-right: 4px;
+              padding-top: 1px;
+              padding-bottom: 1px;
+              font-size: 10pt;
+              font-family: 'Arial Unicode MS', 'Inter', sans-serif;
+              background-color: #fff;
+              background-image: url("/background.png");
+              background-repeat: no-repeat;
+              background-position: center right;
+              background-size: 430px;
+            }
+            .dates, .avedan, .kramank {
+              font-size: 11px;
+              font-family: verdana, sans-serif;
+            }
+            .table2 { font-size: 10pt; }
+            .img1 { width: 96px; height: 96px; object-fit: cover; }
+            .td1 { font-family: verdana, sans-serif; }
+            .img2 { width: 100px; height: 100px; }
+            .td2 { font-size: 14px; font-family: Arial, sans-serif; }
+            .td3 { font-size: 8px; font-family: Arial, sans-serif; }
+          `}</style>
           <table className="mgn" border={0} align="center" width="100%" cellSpacing="0" cellPadding="0">
             <tbody>
               <tr><td colSpan={6}>&nbsp;ई-डिस्ट्रिक्ट के अन्तर्गत जारी..</td></tr>
