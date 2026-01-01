@@ -139,7 +139,7 @@ export default function DomicilePDF({ data, onBack }: DomicilePDFProps) {
               <tr>
                 <td width="17%" ><b>तहसील </b></td>
                 <td ><b>{data.sbd}</b></td>
-                <td width="30%" colSpan={3-g} align="right">&nbsp;</td>
+                <td width="30%" colSpan={3} align="right">&nbsp;</td>
                 <td align="left" width="35%" ><b>जारी दिनांक: <span className="dates">{formattedDate}</span></b></td>
               </tr>
               <tr>
