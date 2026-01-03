@@ -3,6 +3,7 @@ import { useState } from 'react';
 import DomicileForm from '@/components/domicile-form';
 import DomicilePDF from '@/components/domicile-pdf';
 import type { DomicileFormSchema } from '@/lib/validators';
+import PasswordForm from '@/components/password-form';
 
 export interface SubmittedData extends DomicileFormSchema {
   photoUrl: string;
@@ -10,10 +11,19 @@ export interface SubmittedData extends DomicileFormSchema {
 
 export default function Home() {
   const [submittedData, setSubmittedData] = useState<SubmittedData | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const handleFormSubmit = (data: SubmittedData) => {
     setSubmittedData(data);
   };
+
+  const handlePasswordSuccess = () => {
+    setIsAuthenticated(true);
+  };
+
+  if (!isAuthenticated) {
+    return <PasswordForm onSuccess={handlePasswordSuccess} />;
+  }
 
   if (submittedData) {
     return <DomicilePDF data={submittedData} />;
