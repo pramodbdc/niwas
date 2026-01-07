@@ -55,7 +55,6 @@ export default function DomicilePDF({ data }: DomicilePDFProps) {
               <tr><td colSpan={6}><div style={{paddingLeft: '4px'}}><QRCode value={qrCodeValue} size={100} /></div></td></tr>
               <tr><td align="center" colSpan={6}><table border={0} style={{fontSize: '10pt'}} align="center" width="100%" cellSpacing="0" cellPadding="0"><tbody>
                 <tr>
-                    <td align="left" width="50%" valign="bottom" colSpan={2}><b>जारी कर्ता केन्द्र: {data.vle},सीएससी गवर्नेंस जन सेवा केंद्र</b></td>
                     <td width="50%" valign="top" rowSpan={2}><table border={0} width="100%" cellSpacing="0" cellPadding="0" id="table1"><tbody>
                         <tr>
                             <td width="50%" valign="top" style={{fontSize: '14px', fontFamily: 'Arial'}} align="right">{data.officer}&nbsp;</td>
