@@ -68,9 +68,7 @@ export default function DomicilePDF({ data }: DomicilePDFProps) {
                         </td></tr>
                     </tbody></table>&nbsp;</td>
                 </tr>
-                <tr>
-                    <td align="left" width="50%" colSpan={2} valign="top"><b>पद: {data.vle}, केन्द्र प्रभारी <br/>स्थान :{data.address},{data.sbd},{data.district},अन्य (Other),{data.sbd},{data.district}<br/>दिनॉंक: <span style={{fontSize: '11px', fontFamily: 'verdana'}}>{formattedDate}</span><br/>हस्ताक्षर एंव मुहर  </b></td>
-                </tr>
+                
               </tbody></table></td></tr>
               <tr><td align="center" colSpan={6} style={{paddingTop: '1rem'}}><font size="1pt"><b>यह प्रमाण पत्र इलेक्ट्रॉनिक डिलिवरी सिस्टम द्वारा तैयार किया गया है तथा डिजिटल सिग्नेचर से हस्ताक्षरित है। सम्बन्धित केन्द्र के अधिकृत कर्मी द्वारा प्रमाणित किया गया है। यह प्रमाण पत्र वेबसाइट https://edistrict.up.gov.in पर इसका  पहले आवेदन क्र० फिर प्रमाणपत्र क्र० अंकित कर,सत्यापित किया जा सकता है। </b></font></td></tr>
             </tbody>
